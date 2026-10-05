@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Employee | EmployeeHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        EmployeeHub
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('employees') }}">
+            Employees
+        </a>
+
+        <a href="{{ url_for('add_employee') }}">
+            + Add Employee
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="form-card">
+
+        <div class="page-header">
+
+            <h1>Edit Employee</h1>
+
+            <p>
+                Update employee information
+            </p>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% for category, message in messages %}
+
+                <div class="flash {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endwith %}
+
+
+        <form method="POST">
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>Full Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        value="{{ employee['name'] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Email Address</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        value="{{ employee['email'] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Phone Number</label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        value="{{ employee['phone'] }}"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Department</label>
+
+                    <select name="department" required>
+
+                        <option value="IT"
+                        {% if employee['department'] == 'IT' %}selected{% endif %}>
+                            IT
+                        </option>
+
+                        <option value="HR"
+                        {% if employee['department'] == 'HR' %}selected{% endif %}>
+                            HR
+                        </option>
+
+                        <option value="Finance"
+                        {% if employee['department'] == 'Finance' %}selected{% endif %}>
+                            Finance
+                        </option>
+
+                        <option value="Marketing"
+                        {% if employee['department'] == 'Marketing' %}selected{% endif %}>
+                            Marketing
+                        </option>
+
+                        <option value="Sales"
+                        {% if employee['department'] == 'Sales' %}selected{% endif %}>
+                            Sales
+                        </option>
+
+                        <option value="Operations"
+                        {% if employee['department'] == 'Operations' %}selected{% endif %}>
+                            Operations
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Designation</label>
+
+                    <input
+                        type="text"
+                        name="designation"
+                        value="{{ employee['designation'] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Salary</label>
+
+                    <input
+                        type="number"
+                        name="salary"
+                        value="{{ employee['salary'] }}"
+                        min="1"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>Date of Joining</label>
+
+                    <input
+                        type="date"
+                        name="date_of_joining"
+                        value="{{ employee['date_of_joining'] }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+                    Save Changes
+                </button>
+
+                <a
+                    href="{{ url_for('employees') }}"
+                    class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+
+    EmployeeHub © 2026 | Employee Management System
+
+</div>
+
+</body>
+
+</html>

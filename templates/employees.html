@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employees | EmployeeHub</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Inter, Arial, sans-serif;
+            background: #f6f7fb;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 255px;
+            height: 100vh;
+
+            background: #111827;
+            color: white;
+
+            padding: 25px 16px;
+
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 5px 12px 35px;
+        }
+
+        .logo-box {
+            width: 42px;
+            height: 42px;
+
+            background: linear-gradient(
+                135deg,
+                #6366f1,
+                #8b5cf6
+            );
+
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-top: 3px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            padding: 0 12px;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav a {
+            text-decoration: none;
+
+            color: #9ca3af;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 13px 14px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .nav a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .nav a.active {
+            background: #4f46e5;
+            color: white;
+
+            box-shadow:
+                0 5px 15px rgba(79, 70, 229, 0.25);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            position: absolute;
+
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+
+            border-top: 1px solid #273244;
+
+            padding-top: 15px;
+        }
+
+        .logout a {
+            color: #9ca3af;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 255px;
+            min-height: 100vh;
+        }
+
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+
+            background: white;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+        }
+
+        .top-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .top-subtitle {
+            font-size: 11px;
+            color: #9ca3af;
+
+            margin-top: 3px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            background: #eef2ff;
+            color: #4f46e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+        }
+
+        .profile-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .profile-role {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 35px 40px;
+        }
+
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            color: #111827;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .add-button {
+            text-decoration: none;
+
+            background: #4f46e5;
+            color: white;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .add-button:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+
+        /* ================= STAT CARD ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 21px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 3px 12px rgba(15, 23, 42, 0.04);
+
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 20px rgba(15, 23, 42, 0.08);
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 10px;
+
+            background: #eef2ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #4f46e5;
+
+            font-size: 19px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+
+            color: #6b7280;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 25px;
+
+            font-weight: 700;
+
+            color: #111827;
+
+            margin-top: 2px;
+        }
+
+
+        /* ================= EMPLOYEE CARD ================= */
+
+        .employee-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 13px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 4px 15px rgba(15, 23, 42, 0.05);
+        }
+
+
+        /* ================= CARD HEADER ================= */
+
+        .card-header {
+            padding: 22px 24px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 18px;
+
+            font-weight: 700;
+
+            color: #111827;
+        }
+
+        .card-description {
+            font-size: 12px;
+
+            color: #9ca3af;
+
+            margin-top: 4px;
+        }
+
+
+        /* ================= SEARCH ================= */
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-input {
+            width: 250px;
+
+            height: 40px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 7px;
+
+            padding: 0 13px;
+
+            outline: none;
+
+            font-size: 12px;
+
+            transition: 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #6366f1;
+
+            box-shadow:
+                0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-button {
+            height: 40px;
+
+            border: none;
+
+            background: #111827;
+
+            color: white;
+
+            border-radius: 7px;
+
+            padding: 0 16px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background: #374151;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-container {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 950px;
+        }
+
+        thead {
+            background: #f9fafb;
+        }
+
+        th {
+            padding: 14px 20px;
+
+            text-align: left;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            color: #6b7280;
+
+            font-weight: 700;
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 16px 20px;
+
+            font-size: 12px;
+
+            color: #4b5563;
+
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tbody tr {
+            transition: 0.15s;
+        }
+
+        tbody tr:hover {
+            background: #fafbff;
+        }
+
+
+        /* ================= EMPLOYEE ================= */
+
+        .employee {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .employee-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #eef2ff;
+
+            color: #4f46e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .employee-name {
+            font-weight: 600;
+
+            color: #111827;
+
+            font-size: 13px;
+        }
+
+        .employee-email {
+            color: #9ca3af;
+
+            font-size: 10px;
+
+            margin-top: 2px;
+        }
+
+
+        /* ================= BADGE ================= */
+
+        .department-badge {
+            display: inline-block;
+
+            background: #f3f4f6;
+
+            color: #4b5563;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+
+        /* ================= SALARY ================= */
+
+        .salary {
+            font-weight: 600;
+
+            color: #111827;
+        }
+
+
+        /* ================= ACTIONS ================= */
+
+        .actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+        }
+
+        .action {
+            width: 33px;
+            height: 33px;
+
+            border-radius: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+        }
+
+        .edit {
+            background: #eef2ff;
+
+            color: #4f46e5;
+        }
+
+        .edit:hover {
+            background: #e0e7ff;
+        }
+
+        .delete {
+            background: #fef2f2;
+
+            color: #dc2626;
+
+            border: none;
+
+            cursor: pointer;
+        }
+
+        .delete:hover {
+            background: #fee2e2;
+        }
+
+
+        /* ================= EMPTY STATE ================= */
+
+        .empty {
+            text-align: center;
+
+            padding: 70px 20px;
+        }
+
+        .empty-icon {
+            width: 65px;
+            height: 65px;
+
+            margin: 0 auto 17px;
+
+            background: #f3f4f6;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .empty h3 {
+            font-size: 17px;
+
+            color: #374151;
+
+            margin-bottom: 7px;
+        }
+
+        .empty p {
+            font-size: 12px;
+
+            color: #9ca3af;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .sidebar {
+                width: 75px;
+            }
+
+            .logo-text,
+            .logo-subtitle,
+            .menu-title,
+            .nav-text {
+                display: none;
+            }
+
+            .logo {
+                justify-content: center;
+            }
+
+            .nav a {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 75px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .content {
+                padding: 25px 18px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .card-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            .search-form {
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            EH
+        </div>
+
+        <div>
+
+            <div class="logo-text">
+                EmployeeHub
+            </div>
+
+            <div class="logo-subtitle">
+                MANAGEMENT SYSTEM
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-title">
+        MAIN MENU
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="{{ url_for('dashboard') }}">
+
+            <span class="nav-icon">▣</span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('employees') }}"
+            class="active"
+        >
+
+            <span class="nav-icon">♟</span>
+
+            <span class="nav-text">
+                Employees
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('add_employee') }}">
+
+            <span class="nav-icon">＋</span>
+
+            <span class="nav-text">
+                Add Employee
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <div class="logout">
+
+        <a href="{{ url_for('logout') }}">
+
+            <span class="nav-icon">↪</span>
+
+            <span class="nav-text">
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <div>
+
+            <div class="top-title">
+                Employee Management
+            </div>
+
+            <div class="top-subtitle">
+                Manage your organization's workforce
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+
+                {{ session["admin_name"][0]|upper }}
+
+            </div>
+
+
+            <div>
+
+                <div class="profile-name">
+
+                    {{ session["admin_name"] }}
+
+                </div>
+
+                <div class="profile-role">
+                    Administrator
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- CONTENT -->
+
+    <section class="content">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>
+                    Employees
+                </h1>
+
+                <p>
+                    Manage and organize all employee records
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('add_employee') }}"
+                class="add-button"
+            >
+
+                <span>＋</span>
+
+                Add Employee
+
+            </a>
+
+        </div>
+
+
+
+        <!-- STATISTICS -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Total Employees
+                    </div>
+
+                    <div class="stat-value">
+                        {{ employees|length }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🏢
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Departments
+                    </div>
+
+                    <div class="stat-value">
+
+                        {{ employees|map(attribute='department')|unique|list|length }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Active Records
+                    </div>
+
+                    <div class="stat-value">
+                        {{ employees|length }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- EMPLOYEE DIRECTORY -->
+
+        <div class="employee-card">
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Employee Directory
+                    </div>
+
+                    <div class="card-description">
+                        View, search and manage employee information
+                    </div>
+
+                </div>
+
+
+                <form
+                    method="GET"
+                    action="{{ url_for('employees') }}"
+                    class="search-form"
+                >
+
+                    <input
+                        class="search-input"
+                        type="text"
+                        name="search"
+                        placeholder="Search employees..."
+                        value="{{ request.args.get('search', '') }}"
+                    >
+
+                    <button
+                        class="search-button"
+                        type="submit"
+                    >
+                        Search
+                    </button>
+
+                </form>
+
+            </div>
+
+
+
+            {% if employees %}
+
+
+            <!-- TABLE -->
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Employee</th>
+
+                            <th>Contact</th>
+
+                            <th>Department</th>
+
+                            <th>Designation</th>
+
+                            <th>Salary</th>
+
+                            <th>Joined</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for employee in employees %}
+
+                        <tr>
+
+
+                            <td>
+                                #{{ "%03d"|format(employee.id) }}
+                            </td>
+
+
+                            <td>
+
+                                <div class="employee">
+
+                                    <div class="employee-avatar">
+
+                                        {{ employee.name[0]|upper }}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="employee-name">
+
+                                            {{ employee.name }}
+
+                                        </div>
+
+                                        <div class="employee-email">
+
+                                            {{ employee.email }}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                {{ employee.phone }}
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="department-badge">
+
+                                    {{ employee.department }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                {{ employee.designation }}
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="salary">
+
+                                    ₹{{ "%.2f"|format(employee.salary) }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                {{ employee.date_joined }}
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="actions">
+
+
+                                    <a
+                                        href="{{ url_for('edit_employee', id=employee.id) }}"
+                                        class="action edit"
+                                        title="Edit Employee"
+                                    >
+                                        ✎
+                                    </a>
+
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('delete_employee', id=employee.id) }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this employee?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="action delete"
+                                            title="Delete Employee"
+                                        >
+                                            🗑
+                                        </button>
+
+                                    </form>
+
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    👥
+                </div>
+
+                <h3>
+                    No employees found
+                </h3>
+
+                <p>
+                    There are currently no employee records.
+                    Add your first employee to get started.
+                </p>
+
+
+                <a
+                    href="{{ url_for('add_employee') }}"
+                    class="add-button"
+                    style="display:inline-flex;"
+                >
+
+                    ＋ Add Employee
+
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+</body>
+
+</html>

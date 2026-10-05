@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Employee Management{% endblock %}</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #17172b;
+            padding: 25px 18px;
+            color: white;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 10px 35px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .brand h2 {
+            font-size: 17px;
+        }
+
+        .brand small {
+            color: #9ca3af;
+            font-size: 10px;
+        }
+
+        .menu-label {
+            color: #6b6e82;
+            font-size: 10px;
+            font-weight: 700;
+            margin: 0 12px 12px;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 14px;
+            margin-bottom: 6px;
+            border-radius: 9px;
+            color: #a9acba;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #25253e;
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .logout {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 25px;
+            border-top: 1px solid #303047;
+            padding-top: 15px;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            height: 78px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 0 40px;
+        }
+
+        .topbar h1 {
+            font-size: 23px;
+            color: #111827;
+        }
+
+        .topbar p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .admin {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+        }
+
+        .admin-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .admin-role {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 35px 40px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            font-size: 28px;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            padding: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .card-title {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .card-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #eef2ff;
+            color: #4f46e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        /* QUICK ACTIONS */
+        .panel {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            padding: 28px;
+
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .panel h2 {
+            font-size: 18px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .panel-subtitle {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 22px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .action {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            padding: 20px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+
+            text-decoration: none;
+            color: #1e293b;
+        }
+
+        .action:hover {
+            border-color: #6366f1;
+            background: #f8f8ff;
+        }
+
+        .action-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: #eef2ff;
+            color: #4f46e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .action h3 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .action p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        @media(max-width: 900px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 650px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .brand-text,
+            .menu-label,
+            .nav-text {
+                display: none;
+            }
+
+            .brand {
+                justify-content: center;
+            }
+
+            .nav-link {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .content {
+                padding: 25px 18px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                EM
+            </div>
+
+            <div class="brand-text">
+                <h2>EmployeeHub</h2>
+                <small>Management System</small>
+            </div>
+
+        </div>
+
+        <div class="menu-label">
+            MAIN MENU
+        </div>
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}" class="nav-link active">
+                <span>▣</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('employees') }}" class="nav-link">
+                <span>♟</span>
+                <span class="nav-text">Employees</span>
+            </a>
+
+            <a href="{{ url_for('add_employee') }}" class="nav-link">
+                <span>＋</span>
+                <span class="nav-text">Add Employee</span>
+            </a>
+
+        </nav>
+
+        <div class="logout">
+
+            <a href="{{ url_for('logout') }}" class="nav-link">
+                <span>↪</span>
+                <span class="nav-text">Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p>Employee Management System</p>
+            </div>
+
+            <div class="admin">
+
+                <div class="avatar">
+                    {{ session["admin_name"][0]|upper }}
+                </div>
+
+                <div>
+                    <div class="admin-name">
+                        {{ session["admin_name"] }}
+                    </div>
+
+                    <div class="admin-role">
+                        Administrator
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+            <div class="welcome">
+
+                <h2>
+                    Welcome back, {{ session["admin_name"] }}!
+                </h2>
+
+                <p>
+                    Here's what's happening with your employees today.
+                </p>
+
+            </div>
+
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div>
+                        <div class="card-title">
+                            TOTAL EMPLOYEES
+                        </div>
+
+                        <div class="card-number">
+                            {{ employee_count }}
+                        </div>
+                    </div>
+
+                    <div class="card-icon">
+                        ♟
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div>
+                        <div class="card-title">
+                            ACTIVE EMPLOYEES
+                        </div>
+
+                        <div class="card-number">
+                            {{ employee_count }}
+                        </div>
+                    </div>
+
+                    <div class="card-icon">
+                        ✓
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div>
+                        <div class="card-title">
+                            DEPARTMENTS
+                        </div>
+
+                        <div class="card-number">
+                            {{ department_count }}
+                        </div>
+                    </div>
+
+                    <div class="card-icon">
+                        ▦
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h2>Quick Actions</h2>
+
+                <div class="panel-subtitle">
+                    Manage your employee records quickly.
+                </div>
+
+                <div class="actions">
+
+                    <a
+                        href="{{ url_for('add_employee') }}"
+                        class="action"
+                    >
+
+                        <div class="action-icon">
+                            ＋
+                        </div>
+
+                        <div>
+                            <h3>Add New Employee</h3>
+                            <p>Create a new employee record</p>
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('employees') }}"
+                        class="action"
+                    >
+
+                        <div class="action-icon">
+                            ♟
+                        </div>
+
+                        <div>
+                            <h3>View Employees</h3>
+                            <p>View and manage employee records</p>
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
